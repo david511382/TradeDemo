@@ -1,0 +1,23 @@
+var:
+  use_debug: true
+  log_dir: ""
+  # default Asia/Taipei
+  time_zone: "Asia/Taipei"
+
+server:
+  host: "0.0.0.0"
+  port: 1234
+
+redis:
+  max_life_hour: 1
+
+  # 方便管理與測試 redis
+  redis_trade_key_root: "trade"
+
+  trade:
+    protocol: "redis"
+    server:
+      host: "localhost"
+      port: 7379
+    database: "0"
+    password: ""

@@ -1,0 +1,90 @@
+basePath: /api/
+definitions:
+  reqs.OrderPostBuy:
+    properties:
+      price:
+        type: number
+      quantity:
+        type: integer
+    required:
+    - price
+    - quantity
+    type: object
+  reqs.OrderPostSell:
+    properties:
+      price:
+        type: number
+      quantity:
+        type: integer
+    required:
+    - price
+    - quantity
+    type: object
+  resp.Base:
+    properties:
+      data: {}
+      event_id:
+        type: string
+      message:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: homework
+  title: zerologix-homework
+  version: "1.0"
+paths:
+  /trade/order/buy:
+    post:
+      consumes:
+      - application/json
+      description: 買
+      parameters:
+      - description: 參數
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/reqs.OrderPostBuy'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 資料
+          schema:
+            $ref: '#/definitions/resp.Base'
+      security:
+      - ApiKeyAuth: []
+      summary: 買
+      tags:
+      - Order
+  /trade/order/sell:
+    post:
+      consumes:
+      - application/json
+      description: 賣
+      parameters:
+      - description: 參數
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/reqs.OrderPostSell'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 資料
+          schema:
+            $ref: '#/definitions/resp.Base'
+      security:
+      - ApiKeyAuth: []
+      summary: 賣
+      tags:
+      - Order
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
