@@ -29,7 +29,7 @@ make up-test
 go run . server
 ```
 
-1. 到 swagger http://localhost:5487/docs/index.html#/Order/post_trade_order_test
+1. 到 swagger http://localhost:1234/docs/index.html#/Order/post_trade_order_test
 2. 呼叫多次執行測試
 3. 到 redis ui http://localhost:38081/
 4. 會看到有 trade:LastOrderID 存在
