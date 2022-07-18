@@ -5,7 +5,7 @@ ENV := local
 ##########################################
 
 up-test:
-	docker-compose up -d redis
+	docker-compose up -d
 
 down: # 關閉
 	docker-compose down
