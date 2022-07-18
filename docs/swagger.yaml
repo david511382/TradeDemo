@@ -33,7 +33,7 @@ definitions:
         default: 5
         type: integer
       run_times:
-        default: 10000
+        default: 50
         type: integer
     required:
     - price

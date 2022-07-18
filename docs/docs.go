@@ -187,7 +187,7 @@ const docTemplate = `{
                 },
                 "run_times": {
                     "type": "integer",
-                    "default": 10000
+                    "default": 50
                 }
             }
         },

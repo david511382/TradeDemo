@@ -27,6 +27,7 @@ func NewTradeStorage(
 func (l *TradeStorage) LockID() (
 	resultErr error,
 ) {
+	var reTryDelay time.Duration = 10
 	for isTrying := true; isTrying; {
 		isTrying = false
 		timestamp := l.timeUtil.Now().UnixNano()
@@ -34,7 +35,7 @@ func (l *TradeStorage) LockID() (
 			if errUtil.Equal(errInfo, constant.ErrInfoRedisNotChange) {
 				time.Sleep(time.Millisecond)
 				isTrying = true
-				break
+				reTryDelay += 10
 			} else {
 				resultErr = errInfo
 				return
@@ -102,14 +103,15 @@ func (l *TradeStorage) LockOrders(
 ) (
 	resultErr error,
 ) {
+	var reTryDelay time.Duration = 10
 	for isTrying := true; isTrying; {
 		isTrying = false
 		timestamp := l.timeUtil.Now().UnixNano()
 		if errInfo := l.tradeRds.OrderLocker.HSetNx(price, timestamp); errInfo != nil {
 			if errUtil.Equal(errInfo, constant.ErrInfoRedisNotChange) {
-				time.Sleep(time.Millisecond)
+				time.Sleep(time.Millisecond * reTryDelay)
 				isTrying = true
-				break
+				reTryDelay += 10
 			} else {
 				resultErr = errInfo
 				return

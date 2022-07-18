@@ -1,7 +1,7 @@
 package reqs
 
 type OrderPostTest struct {
-	RunTimes int `json:"run_times" form:"run_times" binding:"required" uri:"run_times" url:"run_times" default:"10000"`
+	RunTimes int `json:"run_times" form:"run_times" binding:"required" uri:"run_times" url:"run_times" default:"50"`
 	OrderPostBuy
 }
 
