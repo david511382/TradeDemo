@@ -70,6 +70,20 @@ func (m *MockITradeStorage) EXPECT() *MockITradeStorageMockRecorder {
 	return m.recorder
 }
 
+// Delete mocks base method.
+func (m *MockITradeStorage) Delete(price float64) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Delete", price)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockITradeStorageMockRecorder) Delete(price interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockITradeStorage)(nil).Delete), price)
+}
+
 // Load mocks base method.
 func (m *MockITradeStorage) Load(price float64) ([]*Order, error) {
 	m.ctrl.T.Helper()
@@ -153,17 +167,17 @@ func (mr *MockITradeStorageMockRecorder) ReleaseOrdersLock(price interface{}) *g
 }
 
 // Set mocks base method.
-func (m *MockITradeStorage) Set(orders []*Order) error {
+func (m *MockITradeStorage) Set(price float64, orders []*Order) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Set", orders)
+	ret := m.ctrl.Call(m, "Set", price, orders)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Set indicates an expected call of Set.
-func (mr *MockITradeStorageMockRecorder) Set(orders interface{}) *gomock.Call {
+func (mr *MockITradeStorageMockRecorder) Set(price, orders interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Set", reflect.TypeOf((*MockITradeStorage)(nil).Set), orders)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Set", reflect.TypeOf((*MockITradeStorage)(nil).Set), price, orders)
 }
 
 // UpdateID mocks base method.

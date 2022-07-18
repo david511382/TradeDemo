@@ -65,6 +65,21 @@ func (mr *MockIOrderMockRecorder) PostSell(req interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PostSell", reflect.TypeOf((*MockIOrder)(nil).PostSell), req)
 }
 
+// PostTest mocks base method.
+func (m *MockIOrder) PostTest(req *reqs.OrderPostTest) (resp.OrderPostTest, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PostTest", req)
+	ret0, _ := ret[0].(resp.OrderPostTest)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// PostTest indicates an expected call of PostTest.
+func (mr *MockIOrderMockRecorder) PostTest(req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PostTest", reflect.TypeOf((*MockIOrder)(nil).PostTest), req)
+}
+
 // MockIMatchOrder is a mock of IMatchOrder interface.
 type MockIMatchOrder struct {
 	ctrl     *gomock.Controller

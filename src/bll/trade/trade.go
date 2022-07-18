@@ -75,9 +75,16 @@ func (l *TradeLogic) Match(order Order) (
 		resultStoreOrders = append(resultStoreOrders, &order)
 	}
 
-	if err := l.tradeStorage.Set(resultStoreOrders); err != nil {
-		resultErr = err
-		return
+	if len(resultStoreOrders) == 0 {
+		if err := l.tradeStorage.Delete(price); err != nil {
+			resultErr = err
+			return
+		}
+	} else {
+		if err := l.tradeStorage.Set(price, resultStoreOrders); err != nil {
+			resultErr = err
+			return
+		}
 	}
 
 	return

@@ -94,33 +94,36 @@ func TestTradeLogic_Match(t *testing.T) {
 					mockObj.EXPECT().Load(float64(5)).Return(storeOrders, nil)
 
 					// 被排序
-					var orders = []*Order{
-						// 扣完有剩
-						{
-							ID:        3,
-							OrderType: ORDER_TYPE_BUY,
-							Quantity:  1,
-							Price:     5,
-							Timestamp: 3,
-						},
-						// 跳過相同type
-						{
-							ID:        4,
-							OrderType: ORDER_TYPE_SELL,
-							Quantity:  10,
-							Price:     5,
-							Timestamp: 4,
-						},
-						// 其它的
-						{
-							ID:        5,
-							OrderType: ORDER_TYPE_BUY,
-							Quantity:  10,
-							Price:     5,
-							Timestamp: 5,
-						},
-					}
-					mockObj.EXPECT().Set(orders).Return(nil)
+					var (
+						price  float64 = 5
+						orders         = []*Order{
+							// 扣完有剩
+							{
+								ID:        3,
+								OrderType: ORDER_TYPE_BUY,
+								Quantity:  1,
+								Price:     5,
+								Timestamp: 3,
+							},
+							// 跳過相同type
+							{
+								ID:        4,
+								OrderType: ORDER_TYPE_SELL,
+								Quantity:  10,
+								Price:     5,
+								Timestamp: 4,
+							},
+							// 其它的
+							{
+								ID:        5,
+								OrderType: ORDER_TYPE_BUY,
+								Quantity:  10,
+								Price:     5,
+								Timestamp: 5,
+							},
+						}
+					)
+					mockObj.EXPECT().Set(price, orders).Return(nil)
 
 					mockObj.EXPECT().ReleaseOrdersLock(float64(5))
 
@@ -163,17 +166,20 @@ func TestTradeLogic_Match(t *testing.T) {
 
 					mockObj.EXPECT().ReleaseIDLock()
 
-					var wantOrders = []*Order{
-						// 新增
-						{
-							ID:        2,
-							OrderType: ORDER_TYPE_SELL,
-							Quantity:  10,
-							Price:     5,
-							Timestamp: 1375376523000004567,
-						},
-					}
-					mockObj.EXPECT().Set(wantOrders).Return(nil)
+					var (
+						price      float64 = 5
+						wantOrders         = []*Order{
+							// 新增
+							{
+								ID:        2,
+								OrderType: ORDER_TYPE_SELL,
+								Quantity:  10,
+								Price:     5,
+								Timestamp: 1375376523000004567,
+							},
+						}
+					)
+					mockObj.EXPECT().Set(price, wantOrders).Return(nil)
 
 					mockObj.EXPECT().ReleaseOrdersLock(float64(5))
 
@@ -226,25 +232,73 @@ func TestTradeLogic_Match(t *testing.T) {
 
 					mockObj.EXPECT().ReleaseIDLock()
 
-					var wantOrders = []*Order{
-						// 不匹配
+					var (
+						price      float64 = 5
+						wantOrders         = []*Order{
+							// 不匹配
+							{
+								ID:        4,
+								OrderType: ORDER_TYPE_SELL,
+								Quantity:  10,
+								Price:     5,
+								Timestamp: 4,
+							},
+							// 新增
+							{
+								ID:        2,
+								OrderType: ORDER_TYPE_SELL,
+								Quantity:  10,
+								Price:     5,
+								Timestamp: 1375376523000004567,
+							},
+						}
+					)
+					mockObj.EXPECT().Set(price, wantOrders).Return(nil)
+
+					mockObj.EXPECT().ReleaseOrdersLock(float64(5))
+
+					return mockObj
+				},
+			},
+			wants{
+				err: false,
+			},
+		},
+		{
+			"匹配完",
+			args{
+				Order{
+					OrderType: ORDER_TYPE_SELL,
+					Quantity:  10,
+					Price:     5,
+				},
+			},
+			migrations{
+				timeUtilCreatorFn: func() timeutil.ITime {
+					mockObj := timeutil.NewMockITime(mockCtl)
+					return mockObj
+				},
+				tradeStorageCreatorFn: func() ITradeStorage {
+					mockObj := NewMockITradeStorage(mockCtl)
+
+					mockObj.EXPECT().LockOrders(float64(5)).Return(nil)
+
+					var storeOrders = []*Order{
+						// 匹配
 						{
 							ID:        4,
-							OrderType: ORDER_TYPE_SELL,
+							OrderType: ORDER_TYPE_BUY,
 							Quantity:  10,
 							Price:     5,
 							Timestamp: 4,
 						},
-						// 新增
-						{
-							ID:        2,
-							OrderType: ORDER_TYPE_SELL,
-							Quantity:  10,
-							Price:     5,
-							Timestamp: 1375376523000004567,
-						},
 					}
-					mockObj.EXPECT().Set(wantOrders).Return(nil)
+					mockObj.EXPECT().Load(float64(5)).Return(storeOrders, nil)
+
+					var (
+						price float64 = 5
+					)
+					mockObj.EXPECT().Delete(price).Return(nil)
 
 					mockObj.EXPECT().ReleaseOrdersLock(float64(5))
 

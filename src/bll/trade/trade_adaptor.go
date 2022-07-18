@@ -129,21 +129,32 @@ func (l *TradeStorage) ReleaseOrdersLock(
 }
 
 func (l *TradeStorage) Set(
+	price float64,
 	orders []*Order,
 ) (
 	resultErr error,
 ) {
-	price_ordersMap := make(map[float64][]*orderRds.Model)
+	var storeOrders []*orderRds.Model
 	for _, order := range orders {
-		price := order.Price
-		price_ordersMap[price] = append(price_ordersMap[price], l.parseOrderToModel(order))
+		storeOrders = append(storeOrders, l.parseOrderToModel(order))
 	}
 
-	for price, orders := range price_ordersMap {
-		if errInfo := l.tradeRds.Order.HSet(price, orders); errInfo != nil && !errUtil.Equal(errInfo, constant.ErrInfoRedisNotChange) {
-			resultErr = errInfo
-			return
-		}
+	if errInfo := l.tradeRds.Order.HSet(price, storeOrders); errInfo != nil && !errUtil.Equal(errInfo, constant.ErrInfoRedisNotChange) {
+		resultErr = errInfo
+		return
+	}
+
+	return
+}
+
+func (l *TradeStorage) Delete(
+	price float64,
+) (
+	resultErr error,
+) {
+	if _, errInfo := l.tradeRds.Order.HDel(price); errInfo != nil && !errUtil.Equal(errInfo, constant.ErrInfoRedisNotChange) {
+		resultErr = errInfo
+		return
 	}
 
 	return

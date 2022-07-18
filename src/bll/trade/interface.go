@@ -36,7 +36,13 @@ type ITradeStorage interface {
 		resultErr error,
 	)
 	Set(
+		price float64,
 		orders []*Order,
+	) (
+		resultErr error,
+	)
+	Delete(
+		price float64,
 	) (
 		resultErr error,
 	)
