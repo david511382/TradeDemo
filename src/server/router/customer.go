@@ -12,6 +12,8 @@ func SetupCustomerRouter(cfg *bootstrap.Config, tokenVerifier domain.ITokenVerif
 	apiTrade := api.Group("/trade")
 
 	apiTradeOrder := apiTrade.Group("/order")
+	// api/trade/order/test
+	apiTradeOrder.POST("/test", order.PostTest)
 	// api/trade/order/buy
 	apiTradeOrder.POST("/buy", order.PostBuy)
 	// api/trade/order/sell

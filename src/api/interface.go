@@ -6,6 +6,10 @@ import (
 )
 
 type IOrder interface {
+	PostTest(req *reqs.OrderPostTest) (
+		result resp.OrderPostTest,
+		resultErr error,
+	)
 	PostBuy(req *reqs.OrderPostBuy) (
 		result resp.OrderPostBuy,
 		resultErr error,

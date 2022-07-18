@@ -29,11 +29,13 @@ make up-test
 go run . server
 ```
 
-swagger api 連結  
-http://localhost:1234/docs/index.html#/Order/post_trade_order_buy
+1. 到 swagger http://localhost:5487/docs/index.html#/Order/post_trade_order_test
+2. 呼叫多次執行測試
+3. 到 redis ui http://localhost:38081/
+4. 會看到有 trade:LastOrderID 存在
 
-redis 連結  
-http://localhost:38081/
+執行邏輯是如果配對成功就不會生成新的 order id
+所以執行後的 order id 如果小於執行測試次數是正常的
 
 # 測試指令
 ```

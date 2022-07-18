@@ -93,6 +93,45 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/trade/order/test": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "測試",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "測試",
+                "parameters": [
+                    {
+                        "description": "參數",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reqs.OrderPostTest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "資料",
+                        "schema": {
+                            "$ref": "#/definitions/resp.Base"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -104,10 +143,12 @@ const docTemplate = `{
             ],
             "properties": {
                 "price": {
-                    "type": "number"
+                    "type": "number",
+                    "default": 10
                 },
                 "quantity": {
-                    "type": "integer"
+                    "type": "integer",
+                    "default": 5
                 }
             }
         },
@@ -119,10 +160,34 @@ const docTemplate = `{
             ],
             "properties": {
                 "price": {
-                    "type": "number"
+                    "type": "number",
+                    "default": 10
                 },
                 "quantity": {
-                    "type": "integer"
+                    "type": "integer",
+                    "default": 5
+                }
+            }
+        },
+        "reqs.OrderPostTest": {
+            "type": "object",
+            "required": [
+                "price",
+                "quantity",
+                "run_times"
+            ],
+            "properties": {
+                "price": {
+                    "type": "number",
+                    "default": 10
+                },
+                "quantity": {
+                    "type": "integer",
+                    "default": 5
+                },
+                "run_times": {
+                    "type": "integer",
+                    "default": 10000
                 }
             }
         },

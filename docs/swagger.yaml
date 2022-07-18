@@ -3,8 +3,10 @@ definitions:
   reqs.OrderPostBuy:
     properties:
       price:
+        default: 10
         type: number
       quantity:
+        default: 5
         type: integer
     required:
     - price
@@ -13,12 +15,30 @@ definitions:
   reqs.OrderPostSell:
     properties:
       price:
+        default: 10
         type: number
       quantity:
+        default: 5
         type: integer
     required:
     - price
     - quantity
+    type: object
+  reqs.OrderPostTest:
+    properties:
+      price:
+        default: 10
+        type: number
+      quantity:
+        default: 5
+        type: integer
+      run_times:
+        default: 10000
+        type: integer
+    required:
+    - price
+    - quantity
+    - run_times
     type: object
   resp.Base:
     properties:
@@ -80,6 +100,30 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 賣
+      tags:
+      - Order
+  /trade/order/test:
+    post:
+      consumes:
+      - application/json
+      description: 測試
+      parameters:
+      - description: 參數
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/reqs.OrderPostTest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 資料
+          schema:
+            $ref: '#/definitions/resp.Base'
+      security:
+      - ApiKeyAuth: []
+      summary: 測試
       tags:
       - Order
 securityDefinitions:

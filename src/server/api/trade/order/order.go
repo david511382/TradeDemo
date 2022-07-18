@@ -12,6 +12,58 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// PostTest 測試
+// @Tags Order
+// @Summary 測試
+// @Description 測試
+// @Accept json
+// @Produce json
+// @Param param body reqs.OrderPostTest true "參數"
+// @Success 200 {object} resp.Base{} "資料"
+// @Security ApiKeyAuth
+// @Router /trade/order/test [post]
+func PostTest(c *gin.Context) {
+	tradeRds := redis.Trade()
+	timeUtil, err := timeutil.GetTimeUtil()
+	if err != nil {
+		common.Fail(c, err)
+		return
+	}
+	tradeStorage := tradeBll.NewTradeStorage(
+		timeUtil,
+		tradeRds,
+	)
+	tradeLogic := tradeBll.NewTradeLogic(
+		timeUtil,
+		tradeStorage,
+	)
+	badmintonActivityApiLogic := api.NewOrder(
+		tradeLogic,
+	)
+	NewPostTestHandler(badmintonActivityApiLogic)(c)
+}
+
+func NewPostTestHandler(logic api.IOrder) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var (
+			req reqs.OrderPostTest
+		)
+		if err := c.ShouldBindJSON(&req); err != nil {
+			err := errUtil.NewError(err)
+			common.FailRequest(c, err)
+			return
+		}
+
+		result, err := logic.PostTest(&req)
+		if err != nil {
+			common.Fail(c, err)
+			return
+		}
+
+		common.Success(c, result)
+	}
+}
+
 // PostBuy 買
 // @Tags Order
 // @Summary 買
